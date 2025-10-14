@@ -7,7 +7,15 @@ function App() {
   useEffect(() => {
     axios
       .get("http://localhost:8080/api/movies/trending")
-      .then((res) => setMovies(res.data))
+      .then((res) => {
+        const data = Array.isArray(res.data)
+          ? res.data
+          : res.data.data || res.data.movies || [];
+        console.log("Phim nhận được:", data);
+        console.log(movie.thumb_url, movie.poster_url);
+
+        setMovies(data);
+      })
       .catch((err) => console.error("Lỗi lấy phim:", err));
   }, []);
 
