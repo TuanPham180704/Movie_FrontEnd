@@ -9,7 +9,6 @@ const axiosInstance = axios.create({
   timeout: 10000,
 });
 
-// request interceptor: attach token
 axiosInstance.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
   if (token) {
@@ -19,13 +18,11 @@ axiosInstance.interceptors.request.use((config) => {
   return config;
 });
 
-// response interceptor: auto logout on 401
 axiosInstance.interceptors.response.use(
   (res) => res,
   (error) => {
     if (error?.response?.status === 401) {
-      // optional: show toast before logout
-      logout(); // remove token and reload (see utils/auth)
+      logout();
       window.location.href = "/login";
     }
     return Promise.reject(error);
