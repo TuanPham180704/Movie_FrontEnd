@@ -10,12 +10,14 @@ export default function Register() {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const mutation = useMutation(registerApi, {
+  const mutation = useMutation({
+    mutationFn: registerApi,
     onSuccess() {
       alert("Đăng ký thành công. Vui lòng đăng nhập.");
       navigate("/login");
     },
     onError(err) {
+      console.error(err);
       alert(err?.response?.data?.error || "Register failed");
     },
   });

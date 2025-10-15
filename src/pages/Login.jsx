@@ -11,21 +11,23 @@ export default function Login() {
   const navigate = useNavigate();
   const qc = useQueryClient();
 
-  const mutation = useMutation(loginApi, {
-    onSuccess(data) {
-      if (data?.token) {
-        setToken(data.token);
-        qc.invalidateQueries(["me"]);
-        navigate("/", { replace: true });
-      } else {
-        alert("Login failed: no token returned");
-      }
-    },
-    onError(err) {
-      console.error(err);
-      alert(err?.response?.data?.error || "Login failed");
-    },
-  });
+ const mutation = useMutation({
+  mutationFn: loginApi,
+  onSuccess(data) {
+    if (data?.token) {
+      setToken(data.token);
+      qc.invalidateQueries({ queryKey: ["me"] });
+      navigate("/", { replace: true });
+    } else {
+      alert("Login failed: no token returned");
+    }
+  },
+  onError(err) {
+    console.error(err);
+    alert(err?.response?.data?.error || "Login failed");
+  },
+});
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
