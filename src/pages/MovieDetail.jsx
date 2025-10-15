@@ -5,30 +5,38 @@ import ReactPlayer from "react-player";
 import CommentBox from "../components/CommentBox.jsx";
 
 export default function MovieDetail() {
-  const { slug } = useParams();
+  const { slug } = useParams(); // slug hoặc id phim
   const [movie, setMovie] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios
-      .get(`http://localhost:8080/api/movies/${slug}`)
-      .then((res) => setMovie(res.data))
-      .catch((err) => console.error("Lỗi lấy chi tiết phim:", err));
+    const fetchMovie = async () => {
+      try {
+        const res = await axios.get(`http://localhost:8080/api/movies/${slug}`);
+        setMovie(res.data);
+      } catch (err) {
+        console.error("❌ Lỗi lấy chi tiết phim:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchMovie();
   }, [slug]);
 
-  if (!movie) return <p className="text-center mt-10">Đang tải phim...</p>;
+  if (loading) return <p className="text-center mt-10">Đang tải phim...</p>;
+  if (!movie) return <p className="text-center mt-10">Không tìm thấy phim.</p>;
 
   return (
-    <div>
-      <h1 className="text-3xl font-bold mb-4">{movie.name}</h1>
+    <div className="max-w-5xl mx-auto p-4">
+      <h1 className="text-3xl font-bold mb-4 text-yellow-400">{movie.name}</h1>
       <img
-        src={movie.poster_url}
+        src={movie.poster_url || "/placeholder.jpg"}
         alt={movie.name}
-        className="w-60 rounded-lg mb-4"
+        className="w-60 rounded-lg mb-4 shadow-md"
       />
       <p className="text-gray-300 mb-6">
         {movie.description || "Không có mô tả."}
       </p>
-
       <ReactPlayer
         url={
           movie.video_url ||
@@ -37,10 +45,9 @@ export default function MovieDetail() {
         controls
         width="100%"
         height="480px"
-        className="rounded-lg overflow-hidden"
+        className="rounded-lg overflow-hidden mb-8"
       />
-
-      <CommentBox />
+      <CommentBox movieId={movie.id} />
     </div>
   );
 }
