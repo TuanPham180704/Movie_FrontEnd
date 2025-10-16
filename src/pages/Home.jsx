@@ -9,7 +9,7 @@ export default function Home() {
   useEffect(() => {
     const fetchMovies = async () => {
       try {
-        const data = await movieApi.getTrending();
+        const data = await movieApi.getAll();
         // ✅ API trả { page, total, movies } nên ta lấy data.movies
         setMovies(data.movies || []);
       } catch (err) {

@@ -9,18 +9,19 @@ export default function MovieDetail() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const loadMovie = async () => {
+    const loadMovies = async () => {
       try {
-        const data = await movieApi.getBySlug(slug);
-        setMovie(data);
+        const data = await movieApi.getAll();
+        console.log("Data từ API:", data); // check xem đây là array hay object
+        setMovies(data);
       } catch (err) {
         console.error("❌ Lỗi tải phim:", err);
       } finally {
         setLoading(false);
       }
     };
-    loadMovie();
-  }, [slug]);
+    loadMovies();
+  }, []);
 
   if (loading) return <p className="text-center mt-10">Đang tải phim...</p>;
   if (!movie) return <p className="text-center mt-10">Không tìm thấy phim.</p>;
