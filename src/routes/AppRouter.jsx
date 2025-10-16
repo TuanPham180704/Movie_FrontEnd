@@ -16,11 +16,11 @@ export default function AppRouter() {
       <Routes>
         <Route path="/" element={<AppLayout />}>
           <Route index element={<Home />} />
-          <Route path="/movies/:id" element={<MovieDetail />} />
-          <Route path="login" element={<Login />} />
-          <Route path="register" element={<Register />} />
+          <Route path="/movies/:slug" element={<MovieDetail />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
           <Route
-            path="favorites"
+            path="/favorites"
             element={
               <ProtectedRoute>
                 <Favorites />
@@ -28,7 +28,7 @@ export default function AppRouter() {
             }
           />
           <Route
-            path="history"
+            path="/history"
             element={
               <ProtectedRoute>
                 <History />

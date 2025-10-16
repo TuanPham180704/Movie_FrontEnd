@@ -25,7 +25,10 @@ export default function Header() {
           {token ? (
             <>
               <Link to="/profile" className="hover:text-yellow-400">
-                Profile
+                Thông Tin Cá Nhân
+              </Link>
+              <Link to="/history" className="hover:text-yellow-400">
+                Lịch Sử
               </Link>
               <button
                 onClick={handleLogout}
