@@ -1,27 +1,38 @@
 import { useEffect, useState } from "react";
 import { movieApi } from "../api/movieApi";
-import MovieCard from "../components/MovieCard";
+import MovieList from "../components/MovieList";
 
 export default function Home() {
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    movieApi
-      .getTrending()
-      .then((data) => {
-        setMovies(data);
+    const fetchMovies = async () => {
+      try {
+        const data = await movieApi.getTrending();
+        // ✅ API trả { page, total, movies } nên ta lấy data.movies
+        setMovies(data.movies || []);
+      } catch (err) {
+        console.error("❌ Lỗi khi tải phim:", err);
+      } finally {
         setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Lỗi khi tải phim:", err);
-        setLoading(false);
-      });
+      }
+    };
+
+    fetchMovies();
   }, []);
 
   if (loading) {
     return (
       <div className="text-center text-gray-400 mt-10">⏳ Đang tải phim...</div>
+    );
+  }
+
+  if (!movies.length) {
+    return (
+      <div className="text-center text-gray-400 mt-10">
+        😢 Không có phim nào để hiển thị.
+      </div>
     );
   }
 
@@ -33,7 +44,7 @@ export default function Home() {
 
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
         {movies.map((movie) => (
-          <MovieCard key={movie.slug} movie={movie} />
+          <MovieList key={movie.slug} movie={movie} />
         ))}
       </div>
     </div>

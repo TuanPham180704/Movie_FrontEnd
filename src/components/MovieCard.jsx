@@ -1,12 +1,19 @@
+import { Link } from "react-router-dom";
+
 export default function MovieCard({ movie }) {
   return (
-    <div className="bg-gray-800 rounded-lg p-2 hover:scale-105 transition">
+    <Link
+      to={`/movies/${movie.slug}`}
+      className="bg-gray-800 rounded-xl overflow-hidden hover:scale-105 transition-transform block"
+    >
       <img
         src={movie.thumb_url || movie.poster_url}
         alt={movie.name}
-        className="w-full h-60 object-cover rounded-lg"
+        className="w-full h-72 object-cover"
       />
-      <h2 className="text-sm font-semibold mt-2 text-center">{movie.name}</h2>
-    </div>
+      <div className="p-3 text-center">
+        <h2 className="text-sm font-semibold line-clamp-2">{movie.name}</h2>
+      </div>
+    </Link>
   );
 }
