@@ -8,6 +8,7 @@ import Register from "../pages/Register";
 import Favorites from "../pages/Favorites";
 import History from "../pages/History";
 import ProtectedRoute from "../components/ProtectedRoute";
+import Profile from "../pages/Profile";
 
 export default function AppRouter() {
   return (
@@ -31,6 +32,14 @@ export default function AppRouter() {
             element={
               <ProtectedRoute>
                 <History />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <Profile />
               </ProtectedRoute>
             }
           />
