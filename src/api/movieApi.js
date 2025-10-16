@@ -6,25 +6,44 @@ export const movieApi = {
   async getTrending() {
     try {
       const res = await axios.get(API_BASE);
-      return res.data || [];
+      return Array.isArray(res.data) ? res.data : res.data.movies || [];
     } catch (err) {
-      console.error("Lỗi API:", err);
+      console.error("❌ Lỗi API getTrending:", err);
       return [];
     }
   },
 
   getAll: async (page = 1) => {
-    const res = await axios.get(`${API_BASE}?page=${page}`);
-    return res.data.movies || [];
+    try {
+      const res = await axios.get(`${API_BASE}?page=${page}`);
+      console.log("📦 Kết quả getAll:", res.data);
+      return Array.isArray(res.data) ? res.data : res.data.movies || [];
+    } catch (err) {
+      console.error("❌ Lỗi API getAll:", err);
+      return [];
+    }
   },
 
   getBySlug: async (slug) => {
-    const res = await axios.get(`${API_BASE}/${slug}`);
-    return res.data;
+    try {
+      const res = await axios.get(`${API_BASE}/${slug}`);
+      console.log("📦 Kết quả getBySlug:", res.data);
+      return res.data;
+    } catch (err) {
+      console.error("❌ Lỗi API getBySlug:", err);
+      return null;
+    }
   },
 
   getVideoByEpisode: async (slug, episode = 1) => {
-    const res = await axios.get(`${API_BASE}/${slug}/video?episode=${episode}`);
-    return res.data.videoUrl;
+    try {
+      const res = await axios.get(
+        `${API_BASE}/${slug}/video?episode=${episode}`
+      );
+      return res.data.videoUrl;
+    } catch (err) {
+      console.error("❌ Lỗi API getVideoByEpisode:", err);
+      return null;
+    }
   },
 };

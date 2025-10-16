@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { movieApi } from "../api/movieApi";
-import MovieList from "../components/MovieList";
+import MovieCard from "../components/MovieCard";
 
 export default function Home() {
   const [movies, setMovies] = useState([]);
@@ -10,8 +10,7 @@ export default function Home() {
     const fetchMovies = async () => {
       try {
         const data = await movieApi.getAll();
-        // ✅ API trả { page, total, movies } nên ta lấy data.movies
-        setMovies(data.movies || []);
+        setMovies(data || []);
       } catch (err) {
         console.error("❌ Lỗi khi tải phim:", err);
       } finally {
@@ -44,7 +43,7 @@ export default function Home() {
 
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
         {movies.map((movie) => (
-          <MovieList key={movie.slug} movie={movie} />
+          <MovieCard key={movie.slug} movie={movie} />
         ))}
       </div>
     </div>
