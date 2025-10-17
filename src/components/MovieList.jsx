@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { movieApi } from "../api/movieApi";
 import ReactPlayer from "react-player";
-
+import MovieNotFoundImages from "../assets/movienotfoundimages.png";
 export default function MovieDetail() {
   const { slug } = useParams();
   const [movie, setMovie] = useState(null);
@@ -37,7 +37,7 @@ export default function MovieDetail() {
         {movie.title || movie.name}
       </h1>
       <img
-        src={movie.poster_url || movie.thumb_url || "/placeholder.jpg"}
+        src={movie.poster_url || movie.thumb_url || {MovieNotFoundImages}}
         alt={movie.title || movie.name}
         className="w-60 rounded-lg mb-4 shadow-md"
       />

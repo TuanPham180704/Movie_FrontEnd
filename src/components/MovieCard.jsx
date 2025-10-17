@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-
+import MovieNotFoundImages from "../assets/movienotfoundimages.png";
 export default function MovieCard({ movie }) {
   return (
     <Link
@@ -7,7 +7,7 @@ export default function MovieCard({ movie }) {
       className="bg-gray-800 rounded-xl overflow-hidden hover:scale-105 transition-transform block shadow-lg"
     >
       <img
-        src={movie.thumb_url || movie.poster_url || "/placeholder.jpg"}
+        src={movie.thumb_url || movie.poster_url || { MovieNotFoundImages }}
         alt={movie.name || movie.title}
         className="w-full h-64 sm:h-72 md:h-56 lg:h-64 object-cover"
       />

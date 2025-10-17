@@ -7,7 +7,7 @@ import {
   FaYoutube,
   FaInstagram,
 } from "react-icons/fa";
-
+import anhAdmin from "../assets/avtAdmin.jpg";
 export default function Footer() {
   return (
     <footer className="bg-[#0B0B0C] text-gray-300 border-t border-[#171717]">
@@ -36,22 +36,21 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
           <div className="flex flex-col items-start">
             <div className="flex items-center gap-3">
-              <div className="bg-[#F5C400] rounded-full p-2 flex items-center justify-center shadow-sm">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  className="w-6 h-6"
-                  fill="white"
-                  aria-hidden
-                >
-                  <path d="M3 22v-2a7 7 0 0 1 14 0v2H3Zm7-10a5 5 0 1 1 0-10 5 5 0 0 1 0 10Z" />
-                </svg>
+              <div className="bg-gradient-to-tr from-[#F5C400] to-[#FFD84D] rounded-full p-[3px] flex items-center justify-center shadow-md hover:scale-105 transition-transform duration-300">
+                <img
+                  src={anhAdmin}
+                  alt="anhTuanDev"
+                  className="w-14 h-14 rounded-full object-cover border-2 border-white shadow-sm"
+                  loading="lazy"
+                  style={{ imageRendering: "auto" }}
+                />
               </div>
+
               <div>
                 <h2 className="text-white font-semibold text-lg leading-tight">
                   🎬DevChill
                 </h2>
-                <p className="text-sm text-gray-400 -mt-0.5">Phim hay cá rỗ</p>
+                <p className="text-sm text-gray-400 -mt-0.5">Phim hay cả rổ</p>
               </div>
             </div>
 
@@ -136,14 +135,6 @@ export default function Footer() {
                 )
               )}
             </ul>
-
-            {/* <div className="mt-6 text-xs text-gray-500 text-right max-w-xs">
-              <p>Trang web chỉ tổng hợp link phim có sẵn trên Internet.</p>
-              <p className="mt-3">
-                © {new Date().getFullYear()} 🎬DevChill — Bản quyền nội dung thuộc
-                về tác giả tương ứng.
-              </p>
-            </div> */}
           </div>
         </div>
       </div>
