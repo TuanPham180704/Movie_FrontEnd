@@ -137,19 +137,22 @@ export default function Footer() {
               )}
             </ul>
 
-            <div className="mt-6 text-xs text-gray-500 text-right max-w-xs">
+            {/* <div className="mt-6 text-xs text-gray-500 text-right max-w-xs">
               <p>Trang web chỉ tổng hợp link phim có sẵn trên Internet.</p>
               <p className="mt-3">
                 © {new Date().getFullYear()} 🎬DevChill — Bản quyền nội dung thuộc
                 về tác giả tương ứng.
               </p>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
       <div className="w-full border-t border-[#161616]">
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-12 py-3 text-[12px] text-gray-500 text-center">
-          <span>🎬DevChill • Xem phim chất lượng cao • Vietsub & Thuyết minh</span>
+          <p className="mt-3">
+            © {new Date().getFullYear()} 🎬DevChill — Bản quyền nội dung thuộc
+            về tác giả tương ứng.
+          </p>
         </div>
       </div>
 

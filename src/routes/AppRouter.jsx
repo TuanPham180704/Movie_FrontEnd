@@ -6,7 +6,6 @@ import MovieDetail from "../pages/MovieDetail";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import Favorites from "../pages/Favorites";
-import History from "../pages/History";
 import ProtectedRoute from "../components/ProtectedRoute";
 import Profile from "../pages/Profile";
 
