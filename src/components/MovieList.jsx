@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import { movieApi } from "../api/movieApi";
 import MovieCard from "../components/MovieCard";
 import SkeletonCard from "../components/SkeletonCard";
 
 export default function MovieList() {
-  const { type, slug } = useParams(); 
+  const { slug } = useParams();
+  const location = useLocation();
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
@@ -15,85 +16,97 @@ export default function MovieList() {
     const fetchMovies = async () => {
       try {
         setLoading(true);
-        let data;
 
-        if (type === "country") {
+        let data;
+        if (location.pathname.includes("/movies/country/")) {
           data = await movieApi.getCountryDetail(slug, page);
-        } else if (type === "category") {
-          data = await movieApi.getCategoryDetail(slug, page);
+        } else if (location.pathname.includes("/movies/genre/")) {
+          data = await movieApi.getGenreDetail(slug, page);
         } else {
-          data = await movieApi.getNew(page);
+          data = await movieApi.getNew(page, "v3");
         }
 
-        const list = data?.items || data?.data?.items || [];
+        const items = data?.items || data?.data?.items || [];
+        const total =
+          data?.pagination?.totalPages ||
+          data?.data?.params?.pagination?.totalPages ||
+          1;
 
-        setMovies(list);
-        setTotalPages(data?.pagination?.totalPages || 5);
-      } catch (err) {
-        console.error("Lỗi khi tải danh sách phim:", err);
+        setMovies(items);
+        setTotalPages(total);
+      } catch (error) {
+        console.error("Lỗi load danh sách phim:", error);
       } finally {
         setLoading(false);
       }
     };
 
     fetchMovies();
-  }, [type, slug, page]);
+  }, [slug, page, location.pathname]);
 
-  const handlePageChange = (newPage) => {
-    if (newPage >= 1 && newPage <= totalPages) setPage(newPage);
-  };
+  // Tạo danh sách số trang (giới hạn hiển thị 5 trang gần nhất)
+  const pageNumbers = Array.from(
+    { length: Math.min(totalPages, 5) },
+    (_, i) => {
+      const start = Math.max(1, page - 2);
+      return start + i <= totalPages ? start + i : totalPages - 4 + i;
+    }
+  ).filter((p) => p > 0 && p <= totalPages);
 
   return (
-    <div className="bg-gray-950 text-white min-h-screen">
-      <div className="max-w-7xl mx-auto px-4 py-10">
-        <h2 className="text-3xl font-bold mb-8 border-l-4 border-red-500 pl-3">
-          {type === "country"
-            ? `Phim ${slug.replace("-", " ")}`
-            : type === "category"
-            ? `Thể loại: ${slug.replace("-", " ")}`
-            : "Tất cả phim"}
-        </h2>
+    <div className="bg-gray-950 text-white min-h-screen py-10">
+      <div className="max-w-7xl mx-auto px-4">
+        <h1 className="text-2xl font-bold mb-6 capitalize">
+          {slug?.replace("-", " ")}
+        </h1>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-5">
-          {loading ? (
-            Array(30)
-              .fill(0)
-              .map((_, i) => <SkeletonCard key={i} />)
-          ) : movies.length > 0 ? (
-            movies.map((movie) => (
-              <MovieCard key={movie._id || movie.slug} movie={movie} />
-            ))
-          ) : (
-            <p className="col-span-full text-center text-gray-400">
-              Không có phim nào để hiển thị.
-            </p>
-          )}
+          {loading
+            ? Array(10)
+                .fill(0)
+                .map((_, i) => <SkeletonCard key={i} />)
+            : movies.map((movie) => (
+                <MovieCard key={movie._id || movie.slug} movie={movie} />
+              ))}
         </div>
 
-        {/* Pagination */}
-        {!loading && totalPages > 1 && (
-          <div className="flex justify-center items-center gap-4 mt-10">
-            <button
-              onClick={() => handlePageChange(page - 1)}
-              disabled={page === 1}
-              className="px-4 py-2 bg-gray-800 rounded hover:bg-red-600 disabled:opacity-50"
-            >
-              ← Trước
-            </button>
+        {/* PHÂN TRANG */}
+        <div className="flex justify-center mt-10 space-x-2">
+          <button
+            disabled={page === 1}
+            onClick={() => setPage((p) => Math.max(1, p - 1))}
+            className="px-4 py-2 bg-gray-800 rounded hover:bg-gray-700 disabled:opacity-50"
+          >
+            ← Trước
+          </button>
 
-            <span className="text-gray-300">
-              Trang {page}/{totalPages}
-            </span>
-
+          {pageNumbers.map((num) => (
             <button
-              onClick={() => handlePageChange(page + 1)}
-              disabled={page === totalPages}
-              className="px-4 py-2 bg-gray-800 rounded hover:bg-red-600 disabled:opacity-50"
+              key={num}
+              onClick={() => setPage(num)}
+              className={`px-3 py-2 rounded ${
+                num === page
+                  ? "bg-red-600 text-white"
+                  : "bg-gray-800 hover:bg-gray-700 text-gray-300"
+              }`}
             >
-              Sau →
+              {num}
             </button>
-          </div>
-        )}
+          ))}
+
+          <button
+            disabled={page === totalPages}
+            onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+            className="px-4 py-2 bg-gray-800 rounded hover:bg-gray-700 disabled:opacity-50"
+          >
+            Sau →
+          </button>
+        </div>
+
+        {/* Thông tin tổng */}
+        <div className="text-center text-gray-400 mt-4">
+          Trang {page} / {totalPages}
+        </div>
       </div>
     </div>
   );

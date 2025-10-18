@@ -9,18 +9,21 @@ export default function Home() {
   const [chinaMovies, setChinaMovies] = useState([]);
   const [koreaMovies, setKoreaMovies] = useState([]);
   const [vietNamMovies, setVietNamMovies] = useState([]);
+  const [cartoonMovies, setCartoonMovies] = useState([]);
 
   useEffect(() => {
     const fetchAll = async () => {
       try {
         setLoading(true);
 
-        const [newData, chinaData, koreaData, vnData] = await Promise.all([
-          movieApi.getNew(1, "v3"),
-          movieApi.getCountryDetail("trung-quoc", 1),
-          movieApi.getCountryDetail("han-quoc", 1),
-          movieApi.getCountryDetail("viet-nam", 1),
-        ]);
+        const [newData, chinaData, koreaData, vnData, cartoonData] =
+          await Promise.all([
+            movieApi.getNew(1, "v3"),
+            movieApi.getCountryDetail("trung-quoc", 1),
+            movieApi.getCountryDetail("han-quoc", 1),
+            movieApi.getCountryDetail("viet-nam", 1),
+            movieApi.getGenreDetail("tre-em", 1),
+          ]);
 
         const limit = 10;
         const safeSlice = (data) =>
@@ -32,6 +35,7 @@ export default function Home() {
         setChinaMovies(safeSlice(chinaData));
         setKoreaMovies(safeSlice(koreaData));
         setVietNamMovies(safeSlice(vnData));
+        setCartoonMovies(safeSlice(cartoonData));
       } catch (error) {
         console.error("Lỗi khi load phim:", error);
       } finally {
@@ -47,10 +51,23 @@ export default function Home() {
     { title: "Phim Trung Quốc", data: chinaMovies },
     { title: "Phim Hàn Quốc", data: koreaMovies },
     { title: "Phim Việt Nam", data: vietNamMovies },
+    { title: "Phim Trẻ Em", data: cartoonMovies },
   ];
 
   return (
     <div className="bg-gray-950 text-white min-h-screen">
+      <div className="relative h-[320px] md:h-[400px] bg-gradient-to-r from-indigo-700 via-purple-700 to-pink-600 flex items-center justify-center text-center rounded-b-3xl shadow-lg">
+        <div className="max-w-3xl">
+          <h1 className="text-4xl md:text-5xl font-bold mb-3">
+            Chào mừng đến với{" "}
+            <span className="text-yellow-300">🎬DevChill</span>
+          </h1>
+          <p className="text-lg text-gray-200">
+            Nơi thư giãn của dân lập trình — xem phim, chill nhạc, recharge năng
+            lượng để code tiếp 🔥
+          </p>
+        </div>
+      </div>
       <div className="max-w-7xl mx-auto px-4 py-10 space-y-16">
         {sections.map((section, idx) => (
           <section key={idx}>
@@ -68,7 +85,9 @@ export default function Home() {
                     ? "/movies/country/han-quoc"
                     : section.title.includes("Việt Nam")
                     ? "/movies/country/viet-nam"
-                    : "/movies/new"
+                    : section.title.includes("Trẻ Em")
+                    ? "/movies/genre/tre-em"
+                    : "/movies/new?page=1&version=v3"
                 }
                 className="text-sm text-gray-400 hover:text-red-400 transition"
               >
