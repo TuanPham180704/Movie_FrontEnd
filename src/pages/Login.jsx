@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -11,23 +10,22 @@ export default function Login() {
   const navigate = useNavigate();
   const qc = useQueryClient();
 
- const mutation = useMutation({
-  mutationFn: loginApi,
-  onSuccess(data) {
-    if (data?.token) {
-      setToken(data.token);
-      qc.invalidateQueries({ queryKey: ["me"] });
-      navigate("/", { replace: true });
-    } else {
-      alert("Login failed: no token returned");
-    }
-  },
-  onError(err) {
-    console.error(err);
-    alert(err?.response?.data?.error || "Login failed");
-  },
-});
-
+  const mutation = useMutation({
+    mutationFn: loginApi,
+    onSuccess(data) {
+      if (data?.token) {
+        setToken(data.token);
+        qc.invalidateQueries({ queryKey: ["me"] });
+        navigate("/", { replace: true });
+      } else {
+        alert("Login failed: no token returned");
+      }
+    },
+    onError(err) {
+      console.error(err);
+      alert(err?.response?.data?.error || "Login failed");
+    },
+  });
 
   const handleSubmit = (e) => {
     e.preventDefault();

@@ -1,19 +1,29 @@
 import { Link } from "react-router-dom";
 
 export default function MovieCard({ movie }) {
+  // Gắn domain đúng cho ảnh
+  const imageUrl = movie.poster_url?.startsWith("http")
+    ? movie.poster_url
+    : `https://phimimg.com/${movie.poster_url}`;
+
   return (
     <Link
       to={`/movies/${movie.slug}`}
-      className="bg-white rounded-xl overflow-hidden shadow hover:shadow-lg hover:scale-105 transition block"
+      className="group bg-gray-900 rounded-lg overflow-hidden hover:scale-[1.03] transition-all duration-300 shadow-md"
     >
-      <img
-        src={movie.posterUrl}
-        alt={movie.title}
-        className="w-full h-64 object-cover"
-      />
-      <div className="p-2">
-        <h3 className="font-semibold text-sm line-clamp-2">{movie.title}</h3>
-        <p className="text-xs text-gray-500">{movie.year}</p>
+      <div className="relative">
+        <img
+          src={imageUrl}
+          alt={movie.name}
+          className="w-full h-64 object-cover"
+          onError={(e) => (e.currentTarget.src = "/notfound.jpg")}
+        />
+        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-3">
+          <h3 className="text-white font-semibold text-sm truncate group-hover:text-red-400 transition">
+            {movie.name}
+          </h3>
+          <p className="text-gray-400 text-xs">{movie.episode_current}</p>
+        </div>
       </div>
     </Link>
   );
