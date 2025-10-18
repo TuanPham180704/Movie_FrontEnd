@@ -2,10 +2,9 @@ import axios from "axios";
 
 const BASE_URL = "http://localhost:8080/api/movies";
 
-// ✅ Tạo instance axios riêng để tiện cấu hình chung
 const apiClient = axios.create({
   baseURL: BASE_URL,
-  timeout: 10000, // timeout 10s
+  timeout: 10000,
   headers: {
     "Content-Type": "application/json",
   },
@@ -16,7 +15,6 @@ const handleError = (error) => {
   throw error;
 };
 export const movieApi = {
-  // 1️⃣ Phim mới cập nhật
   getNew: async () => {
     try {
       const res = await apiClient.get("/new");

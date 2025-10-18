@@ -1,20 +1,19 @@
 import { Link } from "react-router-dom";
-import MovieNotFoundImages from "../assets/movienotfoundimages.png";
+
 export default function MovieCard({ movie }) {
   return (
     <Link
       to={`/movies/${movie.slug}`}
-      className="bg-gray-800 rounded-xl overflow-hidden hover:scale-105 transition-transform block shadow-lg"
+      className="bg-white rounded-xl overflow-hidden shadow hover:shadow-lg hover:scale-105 transition block"
     >
       <img
-        src={movie.thumb_url || movie.poster_url || { MovieNotFoundImages }}
-        alt={movie.name || movie.title}
-        className="w-full h-64 sm:h-72 md:h-56 lg:h-64 object-cover"
+        src={movie.posterUrl}
+        alt={movie.title}
+        className="w-full h-64 object-cover"
       />
-      <div className="p-3 text-center bg-gray-900">
-        <h2 className="text-sm sm:text-base font-semibold text-white line-clamp-2">
-          {movie.name || movie.title || "Không tên"}
-        </h2>
+      <div className="p-2">
+        <h3 className="font-semibold text-sm line-clamp-2">{movie.title}</h3>
+        <p className="text-xs text-gray-500">{movie.year}</p>
       </div>
     </Link>
   );
