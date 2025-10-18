@@ -8,6 +8,7 @@ import Register from "../pages/Register";
 import Favorites from "../pages/Favorites";
 import ProtectedRoute from "../components/ProtectedRoute";
 import Profile from "../pages/Profile";
+import CategoryPage from "../components/CategoryPage";
 
 export default function AppRouter() {
   return (
@@ -15,9 +16,10 @@ export default function AppRouter() {
       <Routes>
         <Route path="/" element={<AppLayout />}>
           <Route index element={<Home />} />
-          <Route path="/movies/:slug" element={<MovieDetail />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/category/:type" element={<CategoryPage />} />
+          <Route path="/movies/:slug" element={<MovieDetail />} />
           <Route
             path="/favorites"
             element={

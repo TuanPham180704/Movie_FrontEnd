@@ -1,41 +1,120 @@
-// src/api/movieApi.js
 import axios from "axios";
 
-const api = axios.create({
-  baseURL: "http://localhost:8080/api/movies",
-  timeout: 10000, 
+const BASE_URL = "http://localhost:8080/api/movies";
+
+// ✅ Tạo instance axios riêng để tiện cấu hình chung
+const apiClient = axios.create({
+  baseURL: BASE_URL,
+  timeout: 10000, // timeout 10s
+  headers: {
+    "Content-Type": "application/json",
+  },
 });
 
-// Interceptor xử lý lỗi chung
-api.interceptors.response.use(
-  (response) => response.data,
-  (error) => {
-    console.error("API Error:", error?.response?.data || error.message);
-    return Promise.reject(error);
-  }
-);
-
-export const movieApi = {
-  getNewMovies: () => api.get(`/new`),
-
-  getMovieDetail: (slug) => api.get(`/${slug}`),
-
-  getTmdb: (type, id) => api.get(`/tmdb/${type}/${id}`),
-
-  getList: (category, page = 1, limit = 10) =>
-    api.get(`/list/${category}?page=${page}&limit=${limit}`),
-
-  searchMovie: (keyword, page = 1) =>
-    api.get(`/search?keyword=${encodeURIComponent(keyword)}&page=${page}`),
-
-  getGenres: () => api.get(`/genres`),
-
-  getGenreDetail: (genre, page = 1) => api.get(`/genres/${genre}?page=${page}`),
-
-  getCountries: () => api.get(`/countries`),
-
-  getCountryDetail: (country, page = 1) =>
-    api.get(`/countries/${country}?page=${page}`),
-
-  getMoviesByYear: (year, page = 1) => api.get(`/years/${year}?page=${page}`),
+const handleError = (error) => {
+  console.error("Movie API Error:", error?.response?.data || error.message);
+  throw error;
 };
+export const movieApi = {
+  // 1️⃣ Phim mới cập nhật
+  getNew: async () => {
+    try {
+      const res = await apiClient.get("/new");
+      return res.data;
+    } catch (err) {
+      handleError(err);
+    }
+  },
+
+  getDetail: async (slug) => {
+    try {
+      const res = await apiClient.get(`/${slug}`);
+      return res.data;
+    } catch (err) {
+      handleError(err);
+    }
+  },
+
+  getFromTMDB: async (type, id) => {
+    try {
+      const res = await apiClient.get(`/tmdb/${type}/${id}`);
+      return res.data;
+    } catch (err) {
+      handleError(err);
+    }
+  },
+
+  getList: async (category, page = 1, limit = 10) => {
+    try {
+      const res = await apiClient.get(`/list/${category}`, {
+        params: { page, limit },
+      });
+      return res.data;
+    } catch (err) {
+      handleError(err);
+    }
+  },
+
+  search: async (keyword, page = 1) => {
+    try {
+      const res = await apiClient.get("/search", {
+        params: { keyword, page },
+      });
+      return res.data;
+    } catch (err) {
+      handleError(err);
+    }
+  },
+
+  getGenres: async () => {
+    try {
+      const res = await apiClient.get("/genres");
+      return res.data;
+    } catch (err) {
+      handleError(err);
+    }
+  },
+  getGenreDetail: async (slug, page = 1) => {
+    try {
+      const res = await apiClient.get(`/genres/${slug}`, {
+        params: { page },
+      });
+      return res.data;
+    } catch (err) {
+      handleError(err);
+    }
+  },
+
+  getCountries: async () => {
+    try {
+      const res = await apiClient.get("/countries");
+      return res.data;
+    } catch (err) {
+      handleError(err);
+    }
+  },
+
+  getCountryDetail: async (slug, page = 1) => {
+    try {
+      const res = await apiClient.get(`/countries/${slug}`, {
+        params: { page },
+      });
+      return res.data;
+    } catch (err) {
+      handleError(err);
+    }
+  },
+
+  getMoviesByYear: async (year, page = 1) => {
+    try {
+      const res = await apiClient.get(`/years/${year}`, {
+        params: { page },
+      });
+      return res.data;
+    } catch (err) {
+      handleError(err);
+    }
+  },
+};
+
+export default movieApi;
