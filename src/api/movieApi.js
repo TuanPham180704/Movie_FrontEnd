@@ -15,9 +15,11 @@ const handleError = (error) => {
   throw error;
 };
 export const movieApi = {
-  getNew: async () => {
+  getNew: async (page = 1, version = "v3") => {
     try {
-      const res = await apiClient.get("/new");
+      const res = await apiClient.get("/new", {
+        params: { page, version },
+      });
       return res.data;
     } catch (err) {
       handleError(err);

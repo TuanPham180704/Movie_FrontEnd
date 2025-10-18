@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { movieApi } from "../api/movieApi";
 import MovieCard from "../components/MovieCard";
 import SkeletonCard from "../components/SkeletonCard";
-
+import { Link } from "react-router-dom";
 export default function Home() {
   const [loading, setLoading] = useState(true);
   const [newMovies, setNewMovies] = useState([]);
@@ -58,12 +58,22 @@ export default function Home() {
               <h2 className="text-2xl font-bold border-l-4 border-red-500 pl-3">
                 {section.title}
               </h2>
-              <a
-                href="#"
+
+              {/* Dựa vào title để xác định route */}
+              <Link
+                to={
+                  section.title.includes("Trung Quốc")
+                    ? "/movies/country/trung-quoc"
+                    : section.title.includes("Hàn Quốc")
+                    ? "/movies/country/han-quoc"
+                    : section.title.includes("Việt Nam")
+                    ? "/movies/country/viet-nam"
+                    : "/movies/new"
+                }
                 className="text-sm text-gray-400 hover:text-red-400 transition"
               >
                 Xem thêm →
-              </a>
+              </Link>
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-5">

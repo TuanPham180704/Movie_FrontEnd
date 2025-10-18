@@ -9,6 +9,7 @@ import Favorites from "../pages/Favorites";
 import ProtectedRoute from "../components/ProtectedRoute";
 import Profile from "../pages/Profile";
 import CategoryPage from "../components/CategoryPage";
+import MovieList from "../components/MovieList";
 
 export default function AppRouter() {
   return (
@@ -18,6 +19,7 @@ export default function AppRouter() {
           <Route index element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/movies/:type/:slug" element={<MovieList />} />
           <Route path="/category/:type" element={<CategoryPage />} />
           <Route path="/movies/:slug" element={<MovieDetail />} />
           <Route

@@ -142,7 +142,7 @@ export default function Footer() {
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-12 py-3 text-[12px] text-gray-500 text-center">
           <p className="mt-3">
             © {new Date().getFullYear()} 🎬DevChill — Bản quyền nội dung thuộc
-            về tác giả tương ứng.
+            về TuanDev.
           </p>
         </div>
       </div>
