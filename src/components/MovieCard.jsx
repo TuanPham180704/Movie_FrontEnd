@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 
 export default function MovieCard({ movie }) {
-  // Gắn domain đúng cho ảnh
   const imageUrl = movie.poster_url?.startsWith("http")
     ? movie.poster_url
     : `https://phimimg.com/${movie.poster_url}`;

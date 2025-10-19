@@ -86,7 +86,7 @@ export default function Home() {
                     : section.title.includes("Việt Nam")
                     ? "/movies/country/viet-nam"
                     : section.title.includes("Trẻ Em")
-                    ? "/movies/genre/tre-em"
+                    ? "/movies/genres/tre-em"
                     : "/movies/new?page=1&version=v3"
                 }
                 className="text-sm text-gray-400 hover:text-red-400 transition"

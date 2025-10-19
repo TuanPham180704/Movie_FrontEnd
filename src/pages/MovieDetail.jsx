@@ -11,7 +11,7 @@ export default function MovieDetail() {
   const [currentServerIndex, setCurrentServerIndex] = useState(0);
   const [currentEpisodeIndex, setCurrentEpisodeIndex] = useState(0);
   const [videoUrl, setVideoUrl] = useState("");
-  const [currentPage, setCurrentPage] = useState(1); // ✅ Phân trang
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     const fetchDetail = async () => {
@@ -39,7 +39,7 @@ export default function MovieDetail() {
   const handleServerChange = (index) => {
     setCurrentServerIndex(index);
     setCurrentEpisodeIndex(0);
-    setCurrentPage(1); // reset về trang đầu
+    setCurrentPage(1);
     const url = episodes?.[index]?.server_data?.[0]?.link_m3u8 || "";
     setVideoUrl(url);
   };
@@ -65,7 +65,6 @@ export default function MovieDetail() {
       </div>
     );
 
-  // ✅ Xử lý phân trang tập phim
   const epsData = episodes[currentServerIndex]?.server_data || [];
   const episodesPerPage = 10;
   const totalPages = Math.ceil(epsData.length / episodesPerPage);
@@ -78,7 +77,6 @@ export default function MovieDetail() {
     window.scrollTo({ top: 400, behavior: "smooth" }); // Cuộn mượt
   };
 
-  // ✅ Tạo danh sách số trang hiển thị (5 trang quanh trang hiện tại)
   const renderPageNumbers = () => {
     const pages = [];
     const maxVisible = 5;

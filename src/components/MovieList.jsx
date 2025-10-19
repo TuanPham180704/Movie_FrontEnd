@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { movieApi } from "../api/movieApi";
 import MovieCard from "../components/MovieCard";
 import SkeletonCard from "../components/SkeletonCard";
@@ -7,25 +7,37 @@ import SkeletonCard from "../components/SkeletonCard";
 export default function MovieList() {
   const { slug } = useParams();
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const query = new URLSearchParams(location.search);
+  const currentPage = parseInt(query.get("page") || "1");
+
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(currentPage);
   const [totalPages, setTotalPages] = useState(1);
 
+  // --- Load danh sách phim ---
   useEffect(() => {
     const fetchMovies = async () => {
       try {
         setLoading(true);
-
         let data;
-        if (location.pathname.includes("/movies/country/")) {
-          data = await movieApi.getCountryDetail(slug, page);
-        } else if (location.pathname.includes("/movies/genre/")) {
+        if (location.pathname.includes("/movies/genres/")) {
           data = await movieApi.getGenreDetail(slug, page);
+        } else if (location.pathname.includes("/movies/countries/")) {
+          data = await movieApi.getCountryDetail(slug, page);
+        } else if (location.pathname.includes("/movies/years/")) {
+          data = await movieApi.getMoviesByYear(slug, page);
+        } else if (location.pathname.includes("/movies/list/phim-bo")) {
+          data = await movieApi.getList("phim-bo", page);
+        } else if (location.pathname.includes("/movies/list/phim-le")) {
+          data = await movieApi.getList("phim-le", page);
+        } else if (location.pathname.includes("/movies/list/hoat-hinh")) {
+          data = await movieApi.getList("hoat-hinh", page);
         } else {
-          data = await movieApi.getNew(page, "v3");
+          data = await movieApi.getNew(page);
         }
-
         const items = data?.items || data?.data?.items || [];
         const total =
           data?.pagination?.totalPages ||
@@ -35,7 +47,7 @@ export default function MovieList() {
         setMovies(items);
         setTotalPages(total);
       } catch (error) {
-        console.error("Lỗi load danh sách phim:", error);
+        console.error("Lỗi tải phim:", error);
       } finally {
         setLoading(false);
       }
@@ -43,8 +55,11 @@ export default function MovieList() {
 
     fetchMovies();
   }, [slug, page, location.pathname]);
-
-  // Tạo danh sách số trang (giới hạn hiển thị 5 trang gần nhất)
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    params.set("page", page);
+    navigate(`${location.pathname}?${params.toString()}`, { replace: true });
+  }, [page]);
   const pageNumbers = Array.from(
     { length: Math.min(totalPages, 5) },
     (_, i) => {
@@ -57,9 +72,8 @@ export default function MovieList() {
     <div className="bg-gray-950 text-white min-h-screen py-10">
       <div className="max-w-7xl mx-auto px-4">
         <h1 className="text-2xl font-bold mb-6 capitalize">
-          {slug?.replace("-", " ")}
+          {slug ? slug.replaceAll("-", " ") : "Danh sách phim"}
         </h1>
-
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-5">
           {loading
             ? Array(10)
@@ -69,8 +83,6 @@ export default function MovieList() {
                 <MovieCard key={movie._id || movie.slug} movie={movie} />
               ))}
         </div>
-
-        {/* PHÂN TRANG */}
         <div className="flex justify-center mt-10 space-x-2">
           <button
             disabled={page === 1}
@@ -103,7 +115,6 @@ export default function MovieList() {
           </button>
         </div>
 
-        {/* Thông tin tổng */}
         <div className="text-center text-gray-400 mt-4">
           Trang {page} / {totalPages}
         </div>

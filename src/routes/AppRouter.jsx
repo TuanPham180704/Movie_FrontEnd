@@ -19,9 +19,16 @@ export default function AppRouter() {
           <Route index element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/movies/phim-bo" element={<MovieList />} />
+          <Route path="/movies/phim-le" element={<MovieList />} />
+          <Route path="/movies/hoat-hinh" element={<MovieList />} />
+          <Route path="/movies" element={<MovieList />} />
+          <Route path="/movies/genres/:slug" element={<MovieList />} />
+          <Route path="/movies/countries/:slug" element={<MovieList />} />
+          <Route path="/movies/:slug" element={<MovieDetail />} />
+          <Route path="/movies/years/:slug" element={<MovieList />} />
           <Route path="/movies/:type/:slug" element={<MovieList />} />
           <Route path="/category/:type" element={<CategoryPage />} />
-          <Route path="/movies/:slug" element={<MovieDetail />} />
           <Route
             path="/favorites"
             element={
