@@ -54,29 +54,14 @@ export const movieApi = {
       handleError(err);
     }
   },
-
-  // search: async (keyword, page = 1) => {
-  //   try {
-  //     const res = await apiClient.get("/search", {
-  //       params: { keyword, page },
-  //     });
-  //     return res.data;
-  //   } catch (err) {
-  //     handleError(err);
-  //   }
-  // },
   async search(keyword, page = 1) {
     try {
       const { data } = await axios.get(`${BASE_URL}/search`, {
         params: { keyword, page },
       });
-
-      // backend trả về { status: true, result: [...] }
       if (data?.status && Array.isArray(data.result)) {
         return { items: data.result, totalPages: 1 };
       }
-
-      // fallback khác (nếu backend trả trực tiếp items)
       return data?.items || data?.result || [];
     } catch (error) {
       console.error("❌ Search API error:", error);
