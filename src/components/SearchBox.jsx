@@ -24,6 +24,7 @@ export default function SearchBox() {
     <form
       onSubmit={handleSearch}
       className="flex items-center bg-[#2a2a2a] rounded-lg px-3 py-[6px] w-[320px]"
+
     >
       <FaSearch className="text-gray-400 mr-2 text-sm" />
       <input

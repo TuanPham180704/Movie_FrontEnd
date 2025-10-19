@@ -69,6 +69,7 @@ export default function Home() {
         </div>
       </div>
       <div className="max-w-7xl mx-auto px-4 py-10 space-y-16">
+        
         {sections.map((section, idx) => (
           <section key={idx}>
             <div className="flex items-center justify-between mb-6">

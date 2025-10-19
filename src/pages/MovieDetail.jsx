@@ -36,6 +36,7 @@ export default function MovieDetail() {
     fetchDetail();
   }, [slug]);
 
+  
   const handleServerChange = (index) => {
     setCurrentServerIndex(index);
     setCurrentEpisodeIndex(0);
