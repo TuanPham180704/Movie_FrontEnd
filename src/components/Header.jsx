@@ -1,8 +1,9 @@
 import { Link, useNavigate } from "react-router-dom";
 import { removeToken } from "../utils/auth";
 import { useState, useEffect, useRef } from "react";
-import { FaSearch, FaUser } from "react-icons/fa";
+import {  FaUser } from "react-icons/fa";
 import axios from "axios";
+import SearchBox from "./SearchBox";
 
 export default function Header() {
   const navigate = useNavigate();
@@ -55,19 +56,7 @@ export default function Header() {
             </div>
           </Link>
 
-          <form
-            onSubmit={handleSearch}
-            className="flex items-center bg-[#2a2a2a] rounded-lg px-3 py-[6px] w-[320px]"
-          >
-            <FaSearch className="text-gray-400 mr-2 text-sm" />
-            <input
-              type="text"
-              placeholder="Tìm kiếm phim, diễn viên..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="bg-transparent outline-none text-sm w-full placeholder-gray-400"
-            />
-          </form>
+          <SearchBox />
         </div>
         <nav className="hidden lg:flex items-center gap-6 text-sm flex-grow justify-center relative">
           <Link to="/movies/list/phim-le" className="hover:text-yellow-400">

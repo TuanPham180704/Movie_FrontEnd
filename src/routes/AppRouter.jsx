@@ -23,6 +23,7 @@ export default function AppRouter() {
           <Route path="/movies/phim-le" element={<MovieList />} />
           <Route path="/movies/hoat-hinh" element={<MovieList />} />
           <Route path="/movies" element={<MovieList />} />
+          <Route path="/movies/search" element={<MovieList />} />
           <Route path="/movies/genres/:slug" element={<MovieList />} />
           <Route path="/movies/countries/:slug" element={<MovieList />} />
           <Route path="/movies/:slug" element={<MovieDetail />} />

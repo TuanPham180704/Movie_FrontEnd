@@ -55,14 +55,32 @@ export const movieApi = {
     }
   },
 
-  search: async (keyword, page = 1) => {
+  // search: async (keyword, page = 1) => {
+  //   try {
+  //     const res = await apiClient.get("/search", {
+  //       params: { keyword, page },
+  //     });
+  //     return res.data;
+  //   } catch (err) {
+  //     handleError(err);
+  //   }
+  // },
+  async search(keyword, page = 1) {
     try {
-      const res = await apiClient.get("/search", {
+      const { data } = await axios.get(`${BASE_URL}/search`, {
         params: { keyword, page },
       });
-      return res.data;
-    } catch (err) {
-      handleError(err);
+
+      // backend trả về { status: true, result: [...] }
+      if (data?.status && Array.isArray(data.result)) {
+        return { items: data.result, totalPages: 1 };
+      }
+
+      // fallback khác (nếu backend trả trực tiếp items)
+      return data?.items || data?.result || [];
+    } catch (error) {
+      console.error("❌ Search API error:", error);
+      return [];
     }
   },
 
@@ -115,7 +133,6 @@ export const movieApi = {
       handleError(err);
     }
   },
- 
 };
 
 export default movieApi;
